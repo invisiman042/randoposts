@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, url_for, redirect, flash, request, session
 from flask_login import LoginManager, login_user, current_user, logout_user, UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from forms import LoginForm, RegisterForm, PostForm, photos
 from flask_bootstrap import Bootstrap
 from datetime import datetime
@@ -78,6 +79,7 @@ def add_like(post_id):
     post_to_like = Post.query.get(post_id)
     post_to_like.likes += 1
     db.session.commit()
+    print(request.referrer)
     return redirect(url_for('all_posts'))
 
 
@@ -130,7 +132,7 @@ def my_posts():
 
 @app.route('/all_posts')
 def all_posts():
-    posts = Post.query.all()
+    posts = Post.query.order_by(desc(Post.refer_date)).all()
     return render_template('index.html', page_name='all_posts', posts=posts)
 
 
