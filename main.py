@@ -37,7 +37,7 @@ class User(UserMixin, db.Model):
         return f'User {self.id} : {self.name}, {self.email} has written {self.posts}\n'
 
 
-class Post(UserMixin, db.Model):
+class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
@@ -134,6 +134,12 @@ def my_posts():
 def all_posts():
     posts = Post.query.order_by(desc(Post.refer_date)).all()
     return render_template('index.html', page_name='all_posts', posts=posts)
+
+
+@app.route('/post/<int:post_id>')
+def post_details(post_id):
+    post = Post.query.get(post_id)
+    return render_template('index.html', post=post)
 
 
 @app.route('/login', methods=['GET', 'POST'])

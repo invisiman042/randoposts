@@ -2,6 +2,7 @@ body {
   background-color: #d2d79f;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   text-align: center;
+  margin: 0;
 }
 
 h1 {
@@ -9,32 +10,53 @@ h1 {
   padding: 20px;
   color: #483838;
   text-align: center;
-  /* border: 3px solid #483838; */
   border-radius: 5px;
-  /* background-color: #42855B; */
   color: #483838;
 }
 
 .topnav {
   list-style-type: none;
-  margin: 0;
   padding: 0;
   background-color: #483838;
-  font-size: 20px;
-  border-radius: 5px;
   overflow: hidden;
+  border-radius: 5px;
+  margin: 0;
 }
 
-li {
-  float: left;
-  border-right: 1px solid #D2D79F;
+.stick {
+  position: sticky;
+  top: 0;
 }
 
-.topnav-item {
+.topnav a {
   display: block;
-  color: #90b77d;
-  text-align: center;
   padding: 14px 16px;
+  font-size: 20px;
+}
+
+.left-topbar {
+  float: left;
+}
+
+.right-topbar {
+  float: right;
+}
+
+.left-topbar li,
+.right-topbar li {
+  float: left;
+}
+
+.left-topbar li {
+  border-right: 1px solid #d2d79f;
+}
+
+.right-topbar li {
+  border-left: 1px solid #d2d79f;
+}
+
+.left-topbar a,
+.right-topbar a {
   text-decoration: none;
 }
 
@@ -43,19 +65,24 @@ li a:hover:not(.tree, .title) {
   color: #483838;
 }
 
+.topnav a:not(.title) {
+  color: #90b77d;
+}
+
 .title {
-  background-color: #42855B;
+  background-color: #42855b;
   color: #483838;
   font-weight: bold;
 }
 
-.push {
+.push-right {
   float: right;
-  border-right: none;
-  border-left: 1px solid #D2D79F;
+  /* border-right: none;
+  border-left: 1px solid #D2D79F; */
 }
 
-.info-log, .flash {
+.info-log,
+.flash {
   position: absolute;
   right: 10px;
   margin-top: 8px;
@@ -70,7 +97,7 @@ li a:hover:not(.tree, .title) {
 }
 
 .warning {
-  color: #42855B;
+  color: #42855b;
   font-weight: normal;
 }
 
@@ -90,20 +117,20 @@ li a:hover:not(.tree, .title) {
   text-align: left;
 }
 
-ul {
-  margin-top: 0px;
-}
-
 .post {
   background-color: #90b77d;
   padding: 10px;
   border-radius: 5px;
-  width: 70%;
   text-align: left;
   color: #483838;
-  margin: 5px 0px;
+  margin: 0;
+  margin-bottom: 20px;
   display: flex;
+  align-self: center;
   flex-direction: column;
+  box-shadow: 5px 5px 10px #483838;
+  width: 90%;
+  min-width: 450px;
 }
 
 .post a {
@@ -116,8 +143,6 @@ ul {
   flex-direction: column;
   list-style-type: none;
   padding: 0;
-  align-items: flex-start;
-  margin-left: 20px;
 }
 
 .upload-form {
@@ -129,21 +154,77 @@ ul {
 }
 
 img {
-  width: (100% - 40px);
+  max-width: 100%;
   border-radius: 5px;
   margin: 10px;
 }
 
-img:hover {
-  transform: scale(1.4) translateX(150px);
+.top-content {
+  background-image: url("https://img.freepik.com/free-vector/gradient-mountain-landscape_23-2149162009.jpg?w=2000");
+  background-size: cover;
+  background-position: center;
+  padding: 8px;
+  margin-bottom: 20px;
+  min-height: 380px;
+  position: relative;
+  box-shadow: 0px 5px 10px #483838;
 }
 
-h3 {
+/* img:hover {
+  transform: scale(1.4) translateX(150px);
+  transition: transform 0.3s;
+} */
+
+.content {
+  display: flex;
+}
+
+.post-title {
   font-weight: normal;
+  font-size: 20px;
+  margin: 0;
+}
+
+.page-title {
+  vertical-align: middle;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .editing-buttons {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.right-post-list {
+  list-style-type: none;
+  padding: 0 10px;
+  margin-right: 10px;
+  text-align: left;
+}
+
+.right-bar {
+  background-color: #483838;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.right-post {
+  min-width: 160px;
+  color: #90b77d;
+}
+
+.right-post-title {
+  font-weight: normal;
+}
+
+.post-details {
+  background-color: #90b77d;
+  width: 90%;
+  border-radius: 5px;
+  box-shadow: 0px 5px 10px #483838;
+  align-items: center;
 }

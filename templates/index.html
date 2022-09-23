@@ -6,82 +6,173 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/style.css">
-    <script src="../static/script.js"></script>
+    <!-- <script src="../static/script.js"></script> -->
     <title>Randopost</title>
 </head>
 
 <body>
-    <ul class="topnav">
-        <!-- <li><a class="tree">🌲</a></li> -->
-        <li><a class="title topnav-item" href="{{ url_for('home') }}">Randopost</a></li>
-        <li><a class="topnav-item" href="{{ url_for('all_posts') }}">All Posts</a></li>
-        <li><a class="topnav-item" href="{{ url_for('post') }}">New Post</a></li>
-        <li class="push"><a class="topnav-item" href="{{ url_for('about') }}">About</a></li>
-        {% if current_user.is_authenticated %}
-        <li class="push"><a class="topnav-item" href="{{ url_for('logout') }}">Log out</a></li>
-        <li class="push"><a class="topnav-item" href="{{ url_for('my_posts') }}">My Posts</a></li>
-        {% endif %}
-        {% if not current_user.is_authenticated %}
-        <li class="push"><a class="topnav-item" href="{{ url_for('login') }}">Log in</a></li>
-        <li class="push"><a class="topnav-item" href="{{ url_for('register') }}">Register</a></li>
-        {% endif %}
-    </ul>
-
-    {% if current_user.is_authenticated %}
-    <div class="info-log">Logged as {{ current_user.name }}</div>
-    {% else %}
-    <div class="info-log">Not logged</div>
-    {% endif %}
-
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
-
-    {% if page_name %}
-    <h1>Welcome to the {{ page_name }} page</h1>
-    {% endif %}
-
-    {% if user and current_user.is_authenticated %}
-    <h1 class="warning">You are already logged in</h1>
-    {% endif %}
-
-    {% if form and not current_user.is_authenticated %}
-    <div class="form">
-        {{ wtf.quick_form(form) }}
-    </div>
-    {% endif %}
-
-    {% if page_name == 'post' %}
-    <div class="form">
-        {{ wtf.quick_form(form) }}
-    </div>
-    {% endif %}
-
-    <ul class="post-list">
-        {% for post in posts %}
-        <li class="post">
-            <h3>Post {{ post.id }} : <b>{{ post.title }}</b> posted on {{ post.creation_date.strftime('%d %B %Y') }}
-                <br><i>posted by user {{ post.author }}</i></h3>
-            <div class="likes">Likes : {{ post.likes }}</div>
-            <img src="../static/images/{{ post.image }}" alt="no image">
-            <div class="editing-buttons">
-                <a href="{{ url_for('delete_post', post_id=post.id) }}">delete post</a>
-                <a href="{{ url_for('add_like', post_id=post.id) }}">like post</a>
+    <div class="top-content">
+        <ul class="topnav stick">
+            <div class="left-topbar">
+                <li class=""><a class="title" href="{{ url_for('home') }}">Randopost</a>
+                </li>
+                <li class=""><a class="" href="{{ url_for('all_posts') }}">All Posts</a></li>
+                <li class=""><a class="" href="{{ url_for('post') }}">New Post</a></li>
             </div>
-        </li>
+            <div class="right-topbar">
+                <li class=""><a class="topnav-item" href="{{ url_for('about') }}">About</a></li>
+                {% if current_user.is_authenticated %}
+                <li class=""><a class="" href="{{ url_for('logout') }}">Log out</a></li>
+                <li class=""><a class="" href="{{ url_for('my_posts') }}">My Posts</a></li>
+                {% endif %}
+                {% if not current_user.is_authenticated %}
+                <li class=""><a class="" href="{{ url_for('login') }}">Log in</a></li>
+                <li class=""><a class="" href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </div>
+        </ul>
+
+        {% if current_user.is_authenticated %}
+        <div class="info-log">Logged as {{ current_user.name }}</div>
+        {% else %}
+        <div class="info-log">Not logged</div>
+        {% endif %}
+
+        {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
         {% endfor %}
-    </ul>
 
-    {% if page_name == 'upload' %}
-    <div>
-        <form enctype="multipart/form-data" method="post" class="upload-form" action="/upload_image">
-            <label for="upload_input">Upload image here</label>
-            <input type="file" name="upload_input" name="img" alt="upload here" accept=".jpg">
-            <button type="submit">Submit image</button>
-        </form>
+        {% if page_name %}
+        <h1 class="page-title">Welcome to the {{ page_name }} page</h1>
+        {% endif %}
+
+        {% if user and current_user.is_authenticated %}
+        <h1 class="warning">You are already logged in</h1>
+        {% endif %}
+
     </div>
-    {% endif %}
 
+    <div class="content">
+
+        {% if form and not current_user.is_authenticated %}
+        <div class="form">
+            {{ wtf.quick_form(form) }}
+        </div>
+        {% endif %}
+
+        <ul class="post-list">
+            {% for post in posts %}
+            <li class="post">
+                <h3 class="post-title">Post {{ post.id }} : <b>{{ post.title }}</b> posted on {{
+                    post.creation_date.strftime('%d %B %Y') }}
+                    <br><i>posted by user {{ post.author }}</i>
+                </h3>
+                <div class="likes">Likes : {{ post.likes }}</div>
+                <img src="../static/images/{{ post.image }}" alt="no image">
+                <div class="editing-buttons">
+                    <a href="{{ url_for('delete_post', post_id=post.id) }}">delete post</a>
+                    <a href="{{ url_for('add_like', post_id=post.id) }}">like post</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% if posts %}
+        <div class="right-bar">
+            <ul class="right-post-list">
+                {% for post in posts %}
+                <li class="right-post">
+                    <h3 class="right-post-title"><b>{{ post.title }}</b> on {{
+                        post.creation_date.strftime('%d %B %Y') }}
+                        <br><i>by user {{ post.author }}</i>
+                    </h3>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if page_name == 'upload' %}
+        <div>
+            <form enctype="multipart/form-data" method="post" class="upload-form" action="/upload_image">
+                <label for="upload_input">Upload image here</label>
+                <input type="file" name="upload_input" name="img" alt="upload here" accept=".jpg">
+                <button type="submit">Submit image</button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if post %}
+        <div class="post-details">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.refer_date }}</p>
+            <p>{{ post.creation_date }}</p>
+            <p>{{ post.author }}</p>
+            <img src="../static/images/{{ post.image }}" alt="no image">
+            <p>{{ post.likes }}</p>
+            <p>{{ post.description }}</p>
+        </div>
+        {% endif %}
+
+
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et urna vitae risus porttitor lacinia ut
+            sit
+            amet ex. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla imperdiet eros sed varius
+            ornare.
+            Nulla quis porta diam, a tincidunt dui. Curabitur quis vehicula ipsum, vitae euismod diam. Donec congue
+            justo ac
+            nibh hendrerit volutpat. Donec ex magna, venenatis ac magna ac, varius pretium nisi. Nulla facilisi. Lorem
+            ipsum
+            dolor sit amet, consectetur adipiscing elit. Nam et dictum massa. Sed congue vulputate pretium. Quisque
+            porta
+            velit eu eros dignissim, nec aliquam massa tristique. Donec ut faucibus mauris, vehicula condimentum ligula.
+            Donec egestas, enim nec interdum porttitor, lorem turpis ultricies arcu, a scelerisque leo mauris eu tellus.
+            Integer lectus urna, dapibus et ante eu, facilisis congue sem. Quisque volutpat mi mi, imperdiet ultricies
+            purus
+            fermentum id.
+
+            Phasellus tempus, erat vitae laoreet finibus, leo ante faucibus libero, non bibendum libero lacus maximus
+            lectus. Cras tempor sodales rhoncus. Phasellus non nulla lobortis, ornare nisi id, iaculis tortor. Phasellus
+            scelerisque turpis vel ornare fermentum. Cras in justo at arcu interdum tristique. Nulla sagittis consequat
+            metus. In hac habitasse platea dictumst. Mauris gravida porta laoreet. Quisque vel ultricies turpis. Integer
+            libero est, ornare vel est non, accumsan iaculis augue. Morbi luctus mauris vitae purus sagittis, non
+            hendrerit
+            libero venenatis. Vivamus porttitor velit rhoncus fringilla finibus. Interdum et malesuada fames ac ante
+            ipsum
+            primis in faucibus. Sed pulvinar vitae ex quis sodales.
+
+            Aenean rutrum neque et sem suscipit, sed vehicula sapien rhoncus. Maecenas dapibus tellus magna, et
+            consequat
+            turpis tincidunt sed. In sit amet enim convallis, commodo diam et, volutpat libero. Donec non pharetra ex.
+            Duis
+            a velit gravida, vehicula ex mollis, finibus justo. Praesent risus arcu, venenatis vel est id, tincidunt
+            luctus
+            arcu. Etiam faucibus urna ut lorem pharetra vehicula. Cras dignissim quis risus nec blandit. In hendrerit
+            elit
+            nec scelerisque rhoncus. Proin convallis nisi at turpis blandit, a lobortis libero vehicula. Nulla non
+            hendrerit
+            libero. Mauris ut urna varius, tincidunt neque rhoncus, porttitor neque. Nullam quis tellus in lacus
+            facilisis
+            finibus. Sed ullamcorper sed est in tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In
+            maximus orci nec augue varius viverra.
+
+            Sed nec nibh dignissim, euismod risus sed, consectetur orci. Sed eget gravida purus. Aenean volutpat
+            faucibus
+            nisi, ac vulputate purus molestie sed. Duis cursus turpis at nibh mollis luctus. Etiam facilisis ex ut nisi
+            elementum, at varius nunc suscipit. Aenean ornare lacus eget eros egestas congue. In posuere imperdiet
+            varius.
+            Praesent dapibus ornare vulputate. Ut congue, lectus eu posuere auctor, erat urna convallis mauris, at
+            lacinia
+            diam metus eu orci.
+
+            Vestibulum in eleifend erat, eget vehicula est. Curabitur sem dolor, scelerisque at fringilla nec, egestas
+            eleifend nulla. Mauris magna leo, sodales vel bibendum nec, rhoncus vitae dui. Fusce rhoncus et dui quis
+            rutrum.
+            Ut in erat ante. Ut vulputate arcu id tincidunt lacinia. Aenean id rutrum urna. Curabitur consectetur
+            feugiat
+            neque, id porttitor eros egestas a. Proin a neque quis mi imperdiet congue vitae sit amet mi.
+        </p>
+    </div>
     <div class="get-db" id="db_data">
         <form action="/get_db" method="post">
             <button>Get DB</button>
@@ -97,8 +188,6 @@
         </div>
         {% endif %}
     </div>
-    <!-- <button onclick="trig_db()">Trig db</button> -->
-
 </body>
 
 </html>
